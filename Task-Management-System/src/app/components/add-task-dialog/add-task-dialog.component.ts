@@ -13,8 +13,8 @@ import { MatNativeDateModule } from '@angular/material/core';
 
 @Component({
   selector: 'app-add-task-dialog',
-  imports: [CommonModule, FormsModule, MatButtonModule, MatInputModule, MatDialogModule,MatSelectModule,MatDatepickerModule,
-  MatNativeDateModule],
+  imports: [CommonModule, FormsModule, MatButtonModule, MatInputModule, MatDialogModule, MatSelectModule, MatDatepickerModule,
+    MatNativeDateModule],
   templateUrl: './add-task-dialog.component.html',
   styleUrl: './add-task-dialog.component.css'
 })
@@ -24,15 +24,16 @@ export class AddTaskDialogComponent {
     status: string,
     projectId: string,
     existingTaskNames: string[],
-     projectDueDate: string // incoming due date string
+    projectDueDate: string // incoming due date string
 
   };
 
-  
- minDate: Date = new Date();
+
+  minDate: Date = new Date();
 
   maxDate: Date;
-
+  taskNameExists = false;
+  
   task = {
     taskName: '',
     taskDesc: '',
@@ -42,27 +43,15 @@ export class AddTaskDialogComponent {
     priority: 'medium'
   };
 
- 
-  taskNameExists = false;
 
-  // addTask() {
-  //   const taskNameLower = this.task.taskName.trim().toLowerCase();
 
-  //   if (this.data.existingTaskNames.includes(taskNameLower)) {
-  //     this.taskNameExists = true;
-  //     return;
-  //   }
 
-  //   this.taskNameExists = false;
-  //   this.dialogRef.close(this.task);
-  // }
-
-   constructor() {
+  constructor() {
 
     this.maxDate = new Date(this.data.projectDueDate);
 
   }
- 
+
   // Filters out invalid dates outside the range
 
   dateFilter = (date: Date | null): boolean => {
@@ -72,23 +61,23 @@ export class AddTaskDialogComponent {
     return date >= this.minDate && date <= this.maxDate;
 
   };
- 
+
   addTask() {
-  const taskNameLower = this.task.taskName.trim().toLowerCase();
+    const taskNameLower = this.task.taskName.trim().toLowerCase();
 
-  if (this.data.existingTaskNames.includes(taskNameLower)) {
-    this.taskNameExists = true;
-    return;
+    if (this.data.existingTaskNames.includes(taskNameLower)) {
+      this.taskNameExists = true;
+      return;
+    }
+
+    this.taskNameExists = false;
+    this.dialogRef.close(this.task);
   }
-
-  this.taskNameExists = false;
-  this.dialogRef.close(this.task);
-}
 
 
   cancel() {
     this.dialogRef.close();
   }
 
-  
+
 }

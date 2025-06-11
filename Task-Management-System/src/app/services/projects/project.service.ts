@@ -23,7 +23,7 @@ type GetProjectByUserResponse = {
   dueDate: string;
   user: string;
   createdAt: string;
-  updatedAt?: string; 
+  updatedAt?: string;
   __v: number;
 };
 
@@ -56,7 +56,7 @@ type UpdateProjectResponse = {
 };
 
 type DeleteProjectResponse = {
-  msg : string;
+  msg: string;
 }
 
 @Injectable({
@@ -65,7 +65,7 @@ type DeleteProjectResponse = {
 export class ProjectService {
   private baseUrl = 'http://localhost:5000/api/projects';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   // 🔹 Create a new project
   createProject(data: {

@@ -8,7 +8,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
- 
+
 @Component({
   selector: 'app-project-dialog',
   standalone: true,
@@ -23,8 +23,8 @@ export class ProjectDialogComponent {
   projectForm: FormGroup;
   isChanged: boolean = false;
   nameExists: boolean = false;
-   minDate: Date = new Date();
- 
+  minDate: Date = new Date();
+
   constructor(
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<ProjectDialogComponent>,
@@ -35,18 +35,18 @@ export class ProjectDialogComponent {
       projectDesc: [data?.project?.projectDesc || '', Validators.required],
       dueDate: [data?.project?.dueDate ? new Date(data.project.dueDate) : '', Validators.required], // ✅ Ensures Date format
     });
- 
+
     this.projectForm.valueChanges.subscribe(() => {
       this.detectChanges();
     });
- 
+
     this.projectForm.get('projectName')?.valueChanges.subscribe((name) => {
       if (name) {
         this.checkDuplicateName(name);
       }
     });
   }
- 
+
   detectChanges(): void {
     this.isChanged = JSON.stringify(this.projectForm.value) !== JSON.stringify({
       projectName: this.data?.project?.projectName || '',
@@ -54,13 +54,13 @@ export class ProjectDialogComponent {
       dueDate: this.data?.project?.dueDate ? new Date(this.data.project.dueDate) : '' // ✅ Ensures comparison with Date
     });
   }
- 
+
   checkDuplicateName(name: string): void {
     const projectNameControl = this.projectForm.get('projectName');
     this.nameExists = this.data?.allProjects?.some(
       (proj: any) => proj._id !== this.data?.project?._id && proj.projectName.toLowerCase() === name.toLowerCase()
     );
- 
+
     if (this.nameExists) {
       projectNameControl?.setErrors({ duplicate: true });
       projectNameControl?.markAsTouched(); // ✅ UI updates instantly
@@ -68,13 +68,13 @@ export class ProjectDialogComponent {
       projectNameControl?.setErrors(null);
     }
   }
- 
+
   onSubmit(): void {
     if (this.projectForm.valid && !this.nameExists) {
       this.dialogRef.close(this.projectForm.value);
     }
   }
- 
+
   onCancel(): void {
     console.log("Cancel clicked, resetting form and closing with null");
     this.projectForm.reset(this.data?.project);

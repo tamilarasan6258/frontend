@@ -10,7 +10,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 // import { TaskService } from '../../services/task.service';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { TaskService } from '../../services/tasks/task.service';
- 
+
 @Component({
   selector: 'app-task-details-dialog',
   standalone: true,
@@ -31,58 +31,58 @@ export class TaskDetailsDialogComponent implements OnInit {
   data = inject(MAT_DIALOG_DATA) as any;
   taskService = inject(TaskService);
   dialog = inject(MatDialog);
- 
+
   editable = false;
   task = { ...this.data.task };
- 
+
   existingTaskNames: string[] = [];
   originalTask: any;
   duplicateNameError = false;
- 
+
   minDate: Date = new Date();
   maxDate: Date | null = null;
- 
+
   ngOnInit() {
     const projectId = this.task.project?._id || this.task.project;
     this.originalTask = JSON.parse(JSON.stringify(this.task));
- 
+
     // ✅ Safely initialize maxDate
     const rawDueDate = this.task.project?.dueDate || this.data.projectDueDate;
     this.maxDate = rawDueDate ? new Date(rawDueDate) : null;
- 
+
     this.taskService.getTasksByProject(projectId).subscribe(tasks => {
       this.existingTaskNames = tasks
         .filter(t => t._id !== this.task._id)
         .map(t => t.taskName.trim().toLowerCase());
     });
   }
- 
+
   validateTaskName() {
     const enteredName = this.task.taskName.trim().toLowerCase();
     this.duplicateNameError = this.existingTaskNames.includes(enteredName);
   }
- 
+
   hasChanges(): boolean {
     return JSON.stringify(this.task) !== JSON.stringify(this.originalTask);
   }
- 
+
   enableEdit() {
-    console.log(this.maxDate,"kkkk")
+    console.log(this.maxDate, "kkkk")
     this.editable = true;
   }
- 
+
   updateTask() {
     if (!this.hasChanges()) {
       alert('Changes are not made.');
       return;
     }
- 
+
     const newTaskName = this.task.taskName.trim().toLowerCase();
     if (this.existingTaskNames.includes(newTaskName)) {
       this.duplicateNameError = true;
       return;
     }
- 
+
     this.taskService.updateTask(this.task._id, this.task).subscribe({
       next: res => {
         this.dialogRef.close({ updated: true, task: res });
@@ -92,7 +92,7 @@ export class TaskDetailsDialogComponent implements OnInit {
       }
     });
   }
- 
+
   deleteTask() {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '350px',
@@ -100,7 +100,7 @@ export class TaskDetailsDialogComponent implements OnInit {
         message: 'Are you sure you want to delete this task?'
       }
     });
- 
+
     dialogRef.afterClosed().subscribe((confirmed: boolean) => {
       if (confirmed) {
         this.taskService.deleteTask(this.task._id).subscribe({
@@ -110,11 +110,11 @@ export class TaskDetailsDialogComponent implements OnInit {
       }
     });
   }
- 
+
   close() {
     this.dialogRef.close();
   }
- 
+
   dateFilter = (d: Date | null): boolean => {
     const date = d || new Date();
     return date >= this.minDate && (!this.maxDate || date <= this.maxDate);

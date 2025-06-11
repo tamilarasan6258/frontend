@@ -10,7 +10,14 @@ import { MatCardModule } from '@angular/material/card';
   styleUrl: './front-page.component.css'
 })
 export class FrontPageComponent {
-  constructor(private router: Router) {}
+  constructor(private router: Router) { }
+
+  menuOpen = false;
+
+  toggleMenu() {
+    this.menuOpen = !this.menuOpen;
+  }
+
 
   goToRegister() {
     this.router.navigate(['/register']);

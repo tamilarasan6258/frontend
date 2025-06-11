@@ -50,7 +50,7 @@ type UpdateTaskResponse = {
 };
 
 type DeleteTaskResponse = {
-  msg : string;
+  msg: string;
 }
 
 type GetProjectByIdResponse = {
@@ -78,38 +78,39 @@ export class TaskService {
 
 
   // ✅ Get all tasks for a specific project
- getTasksByProject(projectId: string): Observable<GetTaskByProjectResponse[]> {
+  getTasksByProject(projectId: string): Observable<GetTaskByProjectResponse[]> {
     return this.http.get<GetTaskByProjectResponse[]>(`${this.baseUrl}?projectId=${projectId}`);
   }
 
 
-  
+
   // ✅ Update a task
-   updateTask(
-  id: string, 
-  data: { 
-    taskName?: string; 
-    priority?: 'low' | 'medium' | 'high'; 
-    status?: 'to-do' | 'in-progress' | 'done' | 'backlog'; 
-  }): Observable<UpdateTaskResponse> {
-  return this.http.put<UpdateTaskResponse>(`${this.baseUrl}/${id}`, data);
+  updateTask(
+    id: string,
+    data: {
+      taskName?: string;
+      priority?: 'low' | 'medium' | 'high';
+      status?: 'to-do' | 'in-progress' | 'done' | 'backlog';
+    }): Observable<UpdateTaskResponse> {
+    return this.http.put<UpdateTaskResponse>(`${this.baseUrl}/${id}`, data);
   }
 
   // ✅ Delete a task
-   deleteTask(id: string) : Observable<DeleteTaskResponse> {
+  deleteTask(id: string): Observable<DeleteTaskResponse> {
     return this.http.delete<DeleteTaskResponse>(`${this.baseUrl}/${id}`);
   }
-createTask(taskData: {
-  taskName: string;
-  taskDesc: string;
-  priority: 'low' | 'medium' | 'high';
-  dueDate: string;
-  status: 'to-do' | 'in-progress' | 'done' | 'backlog';
-  project: string;}): Observable<AddTaskResponse> {
-  return this.http.post<AddTaskResponse>(this.baseUrl, taskData);
+  createTask(taskData: {
+    taskName: string;
+    taskDesc: string;
+    priority: 'low' | 'medium' | 'high';
+    dueDate: string;
+    status: 'to-do' | 'in-progress' | 'done' | 'backlog';
+    project: string;
+  }): Observable<AddTaskResponse> {
+    return this.http.post<AddTaskResponse>(this.baseUrl, taskData);
   }
-  
-    getProjectById(projectId: string) : Observable<GetProjectByIdResponse> {
+
+  getProjectById(projectId: string): Observable<GetProjectByIdResponse> {
     return this.http.get<GetProjectByIdResponse>(`${this.projectUrl}/${projectId}`);
   }
 }

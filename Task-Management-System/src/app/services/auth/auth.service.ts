@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 
 
 type RegisterResponse = {
-  msg : string;
+  msg: string;
 }
 
 type LoginResponse = {
@@ -24,7 +24,7 @@ type OTPSendResponse = {
 }
 
 type OTPVerifyResponse = {
-  msg : string;
+  msg: string;
 }
 
 
@@ -40,22 +40,19 @@ export class AuthService {
   }
 
 
-  
 
-  // register(userData: any): Observable<any> {
-  //   return this.http.post(`${this.apiUrl}/register`, userData);
-  // }
-
-    register(userData:  {
-  uname: string;
-  email: string;
-  password: string;}): Observable<RegisterResponse> {
+  register(userData: {
+    uname: string;
+    email: string;
+    password: string;
+  }): Observable<RegisterResponse> {
     return this.http.post<RegisterResponse>(`${this.apiUrl}/register`, userData);
   }
 
   login(userData: {
-  uname: string;
-  password: string;}): Observable<LoginResponse> {
+    uname: string;
+    password: string;
+  }): Observable<LoginResponse> {
     return new Observable(observer => {
       this.http.post<LoginResponse>(`${this.apiUrl}/login`, userData).subscribe({
         next: res => {
@@ -72,12 +69,12 @@ export class AuthService {
 
 
   sendOTP(email: string): Observable<OTPSendResponse> {
-    const payload : {email:string} = {email};
+    const payload: { email: string } = { email };
     return this.http.post<OTPSendResponse>(`${this.apiUrl}/send-otp`, payload);
   }
 
   verifyOTP(email: string, otp: string): Observable<OTPVerifyResponse> {
-    const payload : {email:string, otp:string} = {email,otp};
+    const payload: { email: string, otp: string } = { email, otp };
     return this.http.post<OTPVerifyResponse>(`${this.apiUrl}/verify-otp`, payload);
   }
 
@@ -103,7 +100,7 @@ export class AuthService {
     }
   }
 
-  getCurrentUser(): {id:string, name:string, email:string}|null {
+  getCurrentUser(): { id: string, name: string, email: string } | null {
     const token = localStorage.getItem('token');
     if (token) {
       try {
